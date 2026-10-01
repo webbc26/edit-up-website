@@ -54,13 +54,7 @@ edit-up-html/
 ├── nginx/
 │   └── edit-up.com.conf                  # Production Nginx virtual host configuration
 ├── video-templates/
-│   ├── index.html                        # Video Template Universal Link handler
-│   ├── beat-sync/index.html              # Pre-rendered video template
-│   ├── vintage-vlog/index.html           # Pre-rendered video template
-│   ├── cinematic-travel/index.html       # Pre-rendered video template
-│   ├── reel-glow/index.html              # Pre-rendered video template
-│   ├── fast-montage/index.html           # Pre-rendered video template
-│   └── aesthetic-story/index.html        # Pre-rendered video template
+│   └── index.html                        # Universal Video Template page (dynamically handles /video-templates/{id})
 ├── index.html                            # Master landing page
 ├── 404.html                              # Fallback router for dynamic paths
 ├── .gitignore                            # Clean git exclusion rules
@@ -139,6 +133,6 @@ python3 serve.py 3000
 
 ## 🧪 Testing Video Universal Links
 
-1. Open `https://edit-up.com/video-templates/beat-sync` in Safari on an iPhone.
-2. If Edit Up is installed, iOS opens the app immediately to the Beat Sync video template.
+1. Open `https://edit-up.com/video-templates/1235` (or any template ID) in Safari on an iPhone.
+2. If Edit Up is installed, iOS opens the app immediately to the specific template.
 3. If accessed on desktop, scan the on-screen QR Code with an iPhone camera to test the handoff.
