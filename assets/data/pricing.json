@@ -1,0 +1,60 @@
+{
+  "currency": "USD",
+  "currencySymbol": "$",
+  "updatedAt": "2026-10-01",
+  "disclaimer": "* Prices may differ depending on your country and local taxes. Subscriptions renew automatically unless canceled at least 24 hours before the end of the current period. Payment is charged to your iTunes account upon confirmation. Manage or cancel your subscription in Apple ID Account Settings. Includes 250 Bonus Credits added cumulatively each month for advanced AI-generation features.",
+  "plans": {
+    "weekly": {
+      "id": "com.debotoshdey.SquareSize.weekly",
+      "name": "Weekly Plan",
+      "price": "$6.99",
+      "period": "/ week",
+      "trialTag": "✨ Includes 3-Day Free Trial",
+      "popularBadge": null,
+      "subtext": null,
+      "ctaText": "Start Free 3-Day Trial",
+      "features": [
+        "Unlimited Magic AI Tools",
+        "All Templates & Effects",
+        "High-Resolution 4K Exporting",
+        "Regular New Content Updates",
+        "Cancel Anytime via iTunes"
+      ]
+    },
+    "annual": {
+      "id": "com.debotoshdey.SquareSize.annual",
+      "name": "Annual Access",
+      "price": "$59.99",
+      "period": "/ year",
+      "trialTag": "⚡ Only ~$5.00 / month (Billed annually)",
+      "popularBadge": "Best Value • Save 58%",
+      "subtext": "Save 58% compared to monthly billing",
+      "ctaText": "Get Annual Access",
+      "features": [
+        "Unlimited Magic AI Tools",
+        "250 Monthly Bonus AI Credits",
+        "All Templates, Grids & Effects",
+        "Studio Backgrounds & 3D Shadows",
+        "Ultra HD 4K Photo & Video Export",
+        "Priority Access to New Features"
+      ]
+    },
+    "monthly": {
+      "id": "com.debotoshdey.SquareSize.monthly",
+      "name": "Monthly Plan",
+      "price": "$11.99",
+      "period": "/ month",
+      "trialTag": "✨ Includes 3-Day Free Trial",
+      "popularBadge": null,
+      "subtext": null,
+      "ctaText": "Start Free 3-Day Trial",
+      "features": [
+        "Unlimited Magic AI Tools",
+        "250 Monthly Bonus AI Credits",
+        "All Templates & Filters",
+        "High-Resolution Exporting",
+        "Cancel Anytime via iTunes"
+      ]
+    }
+  }
+}

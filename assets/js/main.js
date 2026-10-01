@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScreenshotSlider();
   initFAQAccordion();
   initSmoothScroll();
+  initPricingSync();
 });
 
 /* Mobile Menu Navigation */
@@ -159,3 +160,38 @@ function initSmoothScroll() {
     });
   });
 }
+
+/* Dynamic Pricing Synchronization */
+async function initPricingSync() {
+  try {
+    const res = await fetch('/assets/data/pricing.json');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data || !data.plans) return;
+
+    Object.keys(data.plans).forEach(planKey => {
+      const plan = data.plans[planKey];
+      const card = document.querySelector(`.pricing-card[data-pricing-plan="${planKey}"]`);
+      if (!card) return;
+
+      const priceEl = card.querySelector('[data-pricing-field="price"]');
+      if (priceEl && plan.price) priceEl.textContent = plan.price;
+
+      const periodEl = card.querySelector('[data-pricing-field="period"]');
+      if (periodEl && plan.period) periodEl.textContent = plan.period;
+
+      const trialEl = card.querySelector('[data-pricing-field="trialTag"]');
+      if (trialEl && plan.trialTag) trialEl.textContent = plan.trialTag;
+
+      const badgeEl = card.querySelector('[data-pricing-field="popularBadge"]');
+      if (badgeEl && plan.popularBadge) badgeEl.textContent = plan.popularBadge;
+
+      const ctaEl = card.querySelector('[data-pricing-field="ctaText"]');
+      if (ctaEl && plan.ctaText) ctaEl.textContent = plan.ctaText;
+    });
+  } catch (err) {
+    // Graceful fallback to static pre-rendered HTML values
+    console.debug('Pricing loaded from pre-rendered static HTML:', err);
+  }
+}
+
