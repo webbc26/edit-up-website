@@ -800,43 +800,165 @@ p {
   color: #FF85B2;
 }
 
-/* Showcase Screenshot Carousel */
+/* Showcase Screenshot Animated Slider */
 .showcase-section {
   padding: 100px 0;
   position: relative;
+  overflow: hidden;
 }
 
-.screenshots-carousel-wrapper {
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
+.showcase-slider-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 40px;
+  overflow: hidden;
+  padding: 20px 0 40px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.showcase-track {
   display: flex;
-  gap: 24px;
-  padding: 20px 4px 40px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--brand-pink) rgba(255, 255, 255, 0.05);
+  gap: 28px;
+  width: max-content;
+  animation: scrollShowcase 35s linear infinite;
+  will-change: transform;
+}
+
+.showcase-slider-wrapper:hover .showcase-track {
+  animation-play-state: paused;
+}
+
+@keyframes scrollShowcase {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - 14px));
+  }
 }
 
 .screenshot-item {
-  flex: 0 0 280px;
-  scroll-snap-align: start;
+  flex: 0 0 260px;
   border-radius: 28px;
   overflow: hidden;
   border: 1px solid var(--border-subtle);
   background: #111020;
   box-shadow: var(--shadow-card);
   transition: all var(--transition-smooth);
+  position: relative;
 }
 
 .screenshot-item:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-10px) scale(1.03);
   border-color: var(--brand-pink);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 0, 100, 0.25);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 0, 100, 0.35);
+  z-index: 5;
 }
 
 .screenshot-item img {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.slider-nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(10px);
+}
+
+.slider-nav-btn:hover {
+  background: var(--gradient-brand);
+  border-color: transparent;
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(255, 0, 100, 0.4);
+}
+
+.slider-nav-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Video Editor Showcase Specific Styles */
+.video-editor-section {
+  padding: 100px 0;
+  position: relative;
+}
+
+.video-editor-preview-card {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 2px solid rgba(255, 0, 122, 0.4);
+  box-shadow: var(--shadow-glow-lg);
+  background: var(--bg-card);
+}
+
+.video-editor-preview-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-music-badge {
+  position: absolute;
+  bottom: 24px;
+  left: 20px;
+  right: 20px;
+  background: rgba(14, 12, 26, 0.88);
+  border: 1px solid rgba(255, 0, 122, 0.4);
+  backdrop-filter: blur(16px);
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.waveform-animation {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 24px;
+}
+
+.waveform-bar {
+  width: 3px;
+  background: var(--gradient-brand);
+  border-radius: 2px;
+  animation: waveMotion 1.2s ease-in-out infinite alternate;
+}
+
+.waveform-bar:nth-child(1) { height: 10px; animation-delay: 0.1s; }
+.waveform-bar:nth-child(2) { height: 22px; animation-delay: 0.3s; }
+.waveform-bar:nth-child(3) { height: 16px; animation-delay: 0.5s; }
+.waveform-bar:nth-child(4) { height: 24px; animation-delay: 0.2s; }
+.waveform-bar:nth-child(5) { height: 14px; animation-delay: 0.4s; }
+
+@keyframes waveMotion {
+  0% { transform: scaleY(0.4); }
+  100% { transform: scaleY(1); }
 }
 
 /* Template Hub / Universal Link Section on Homepage */

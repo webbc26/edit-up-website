@@ -6,8 +6,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initComparisonSlider();
+  initScreenshotSlider();
   initFAQAccordion();
-  initVideoLinkTester();
   initSmoothScroll();
 });
 
@@ -70,15 +70,54 @@ function initComparisonSlider() {
     setSliderPosition(clientX);
   };
 
-  // Mouse events
   container.addEventListener('mousedown', startDrag);
   window.addEventListener('mouseup', stopDrag);
   window.addEventListener('mousemove', onDrag);
 
-  // Touch events
   container.addEventListener('touchstart', startDrag, { passive: true });
   window.addEventListener('touchend', stopDrag);
   window.addEventListener('touchmove', onDrag, { passive: true });
+}
+
+/* Animated Screenshot Showcase Slider */
+function initScreenshotSlider() {
+  const track = document.querySelector('.showcase-track');
+  const prevBtn = document.getElementById('slider-prev');
+  const nextBtn = document.getElementById('slider-next');
+
+  if (!track) return;
+
+  // Duplicate the children once so the CSS marquee loops seamlessly
+  const items = Array.from(track.children);
+  items.forEach(item => {
+    const clone = item.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
+  });
+
+  // Manual nudge buttons
+  let manualOffset = 0;
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      track.style.animationPlayState = 'paused';
+      manualOffset += 300;
+      track.style.transform = `translateX(${manualOffset}px)`;
+      setTimeout(() => {
+        track.style.animationPlayState = 'running';
+      }, 2500);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      track.style.animationPlayState = 'paused';
+      manualOffset -= 300;
+      track.style.transform = `translateX(${manualOffset}px)`;
+      setTimeout(() => {
+        track.style.animationPlayState = 'running';
+      }, 2500);
+    });
+  }
 }
 
 /* FAQ Accordion */
@@ -92,12 +131,10 @@ function initFAQAccordion() {
     questionBtn.addEventListener('click', () => {
       const isActive = item.classList.contains('active');
 
-      // Close all other items
       faqItems.forEach(other => {
         if (other !== item) other.classList.remove('active');
       });
 
-      // Toggle current
       if (isActive) {
         item.classList.remove('active');
       } else {
@@ -105,40 +142,6 @@ function initFAQAccordion() {
       }
     });
   });
-}
-
-/* Universal Link Interactive Tester for Video Templates */
-function initVideoLinkTester() {
-  const testerInput = document.getElementById('tester-input');
-  const testerBtn = document.getElementById('tester-btn');
-  const testerOutput = document.getElementById('tester-result');
-
-  if (testerBtn && testerInput) {
-    testerBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      let val = testerInput.value.trim();
-      if (!val) val = 'beat-sync';
-
-      // Clean ID
-      const safeId = encodeURIComponent(val.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''));
-      const targetUrl = `https://edit-up.com/video-templates/${safeId}`;
-
-      if (testerOutput) {
-        testerOutput.innerHTML = `
-          <div style="margin-top: 16px; padding: 16px; background: rgba(0,0,0,0.5); border-radius: 12px; border: 1px solid var(--border-accent); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-            <div>
-              <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Generated Video Universal Link:</span>
-              <a href="/video-templates/${safeId}" style="color: #FFB4D6; font-family: monospace; font-size: 0.95rem; word-break: break-all;">${targetUrl}</a>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button onclick="navigator.clipboard.writeText('${targetUrl}').then(() => alert('Universal Link copied!'))" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Copy Link</button>
-              <a href="/video-templates/${safeId}" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.85rem;">Test Page</a>
-            </div>
-          </div>
-        `;
-      }
-    });
-  }
 }
 
 /* Smooth Scrolling for Anchors */
