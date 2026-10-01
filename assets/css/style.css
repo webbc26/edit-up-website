@@ -1610,6 +1610,7 @@ p {
   flex-direction: column;
   gap: 16px;
   margin-top: 12px;
+  width: 100%;
 }
 
 .btn-open-app {
@@ -1628,11 +1629,26 @@ p {
   transition: all var(--transition-fast);
   cursor: pointer;
   border: none;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-open-app svg {
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
 }
 
 .btn-open-app:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 12px 40px rgba(255, 0, 100, 0.7);
+}
+
+.btn-open-app:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 16px rgba(255, 0, 100, 0.4);
 }
 
 .template-fallback-box {
@@ -2064,16 +2080,18 @@ p {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(14, 13, 27, 0.95);
+  background: rgba(14, 13, 27, 0.96);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 0, 122, 0.35);
-  padding: 12px 20px;
+  padding: 10px 18px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
   z-index: 999;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
 }
 
 .sticky-mobile-cta-info {
@@ -2081,45 +2099,65 @@ p {
   align-items: center;
   gap: 10px;
   min-width: 0;
+  flex: 1 1 auto;
 }
 
 .sticky-mobile-cta-info img {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
   flex-shrink: 0;
 }
 
 .sticky-mobile-cta-text {
   min-width: 0;
+  overflow: hidden;
 }
 
 .sticky-mobile-cta-title {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #FFFFFF;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.25;
 }
 
 .sticky-mobile-cta-sub {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-secondary);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .btn-sticky-open {
   background: var(--gradient-brand);
   color: #FFFFFF;
-  padding: 10px 20px;
+  padding: 10px 18px;
   border-radius: var(--radius-full);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   white-space: nowrap;
   text-decoration: none;
   flex-shrink: 0;
   box-shadow: 0 4px 15px rgba(255, 0, 100, 0.4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn-sticky-open:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 100, 0.6);
+}
+
+.btn-sticky-open:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 10px rgba(255, 0, 100, 0.4);
 }
 
 /* Responsive Media Queries */
@@ -2167,7 +2205,7 @@ p {
 
 @media (max-width: 768px) {
   body {
-    padding-bottom: 96px; /* Offset for sticky mobile bar */
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); /* Offset for sticky mobile bar with iOS safe area */
   }
 
   .sticky-mobile-cta {
@@ -2178,38 +2216,101 @@ p {
     display: none !important; /* Hide desktop camera QR scanner on mobile screens */
   }
 
+  /* Template View Hero Section Responsive */
+  .template-view-hero {
+    padding: 30px 0 48px;
+  }
+
+  .template-view-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .template-view-hero h1#template-title {
+    font-size: 1.85rem;
+    line-height: 1.22;
+    margin-bottom: 12px;
+  }
+
+  .template-view-hero #template-description {
+    font-size: 1rem;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  .template-actions {
+    gap: 14px;
+    width: 100%;
+  }
+
+  /* Primary Use Template CTA button - perfectly responsive */
+  .btn-open-app {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1.05rem;
+    gap: 10px;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(255, 0, 100, 0.45);
+  }
+
+  .btn-open-app svg {
+    width: 20px;
+    height: 20px;
+  }
+
   .template-preview-media {
     height: 380px;
   }
 
+  .template-features-section {
+    padding: 60px 0;
+  }
+
   .template-features-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .template-steps-section {
+    padding: 60px 0;
   }
 
   .template-steps-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+    margin-top: 32px;
+  }
+
+  .video-editor-section {
+    padding: 60px 0;
   }
 
   .template-fallback-box {
     flex-direction: column;
     text-align: center;
     align-items: stretch;
-    gap: 16px;
+    gap: 14px;
+    padding: 18px;
   }
 
   .template-fallback-box .btn-appstore {
     justify-content: center;
+    width: 100%;
   }
 
   .template-share-tools {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     width: 100%;
   }
 
   .template-share-tools .btn-tool {
     justify-content: center;
     width: 100%;
+    padding: 11px 14px;
+    font-size: 0.88rem;
   }
 
   .nav-links, .nav-cta {
@@ -2280,22 +2381,61 @@ p {
 }
 
 @media (max-width: 480px) {
-  .template-preview-media {
-    height: 320px;
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
-  .template-header-badges {
-    gap: 8px;
+  .template-view-hero {
+    padding: 20px 0 36px;
   }
 
-  .template-header-badge {
-    padding: 5px 12px;
+  .template-view-grid {
+    gap: 28px;
+  }
+
+  .template-view-hero h1#template-title {
+    font-size: 1.6rem;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .template-view-hero #template-description {
+    font-size: 0.94rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .template-info-pills {
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .template-info-pill {
+    padding: 5px 10px;
     font-size: 0.78rem;
   }
 
-  .template-id-display {
-    padding: 5px 10px;
-    font-size: 0.84rem;
+  /* Optimized Use Template Button on Mobile */
+  .btn-open-app {
+    padding: 14px 16px;
+    font-size: 0.98rem;
+    gap: 8px;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(255, 0, 100, 0.4);
+  }
+
+  .btn-open-app svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .btn-open-app span {
+    white-space: nowrap;
+  }
+
+  .template-preview-media {
+    height: 320px;
   }
 
   .template-player-details-panel {
@@ -2306,8 +2446,86 @@ p {
     font-size: 1.05rem;
   }
 
+  .template-fallback-box {
+    padding: 14px;
+    border-radius: 14px;
+    gap: 12px;
+  }
+
+  .template-fallback-box strong {
+    font-size: 0.88rem;
+  }
+
+  .template-fallback-box span {
+    font-size: 0.8rem;
+  }
+
+  .sticky-mobile-cta {
+    padding: 8px 14px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    gap: 8px;
+  }
+
+  .sticky-mobile-cta-info img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .sticky-mobile-cta-title {
+    font-size: 0.82rem;
+  }
+
+  .sticky-mobile-cta-sub {
+    font-size: 0.68rem;
+  }
+
+  .btn-sticky-open {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    border-radius: 12px;
+  }
+
+  .video-editor-section {
+    padding: 44px 0;
+  }
+
+  .template-features-section {
+    padding: 44px 0;
+  }
+
+  .template-steps-section {
+    padding: 44px 0;
+  }
+
   .footer-bottom {
     font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .btn-open-app {
+    padding: 12px 10px;
+    font-size: 0.88rem;
+    gap: 6px;
+  }
+
+  .sticky-mobile-cta {
+    padding: 6px 10px;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .sticky-mobile-cta-sub {
+    display: none;
+  }
+
+  .btn-sticky-open {
+    padding: 7px 12px;
+    font-size: 0.78rem;
+  }
+
+  .template-share-tools {
+    grid-template-columns: 1fr;
   }
 }
 
