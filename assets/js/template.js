@@ -162,25 +162,13 @@ function resolveTemplateInfo(id) {
  */
 function renderVideoTemplateDetails(id, info) {
   const titleEl = document.getElementById('template-title');
-  const idEl = document.getElementById('template-id-text');
   const descEl = document.getElementById('template-description');
   const tagsEl = document.getElementById('template-tags-container');
-  const bannerTag = document.getElementById('template-banner-tag');
   const previewTitle = document.getElementById('template-preview-title');
 
   // Title and Description remain generic for all templates
   if (titleEl) titleEl.textContent = GENERIC_HEADING;
-  if (idEl) idEl.textContent = id;
   if (descEl) descEl.textContent = GENERIC_DESCRIPTION;
-  if (bannerTag) {
-    bannerTag.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;">
-        <polygon points="23 7 16 12 23 17 23 7"></polygon>
-        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-      </svg>
-      VIDEO TEMPLATE
-    `;
-  }
   if (previewTitle) previewTitle.textContent = GENERIC_HEADING;
 
   if (tagsEl) {
@@ -246,7 +234,6 @@ function updateMetadata(id, info) {
  * Apply Device-Aware Customizations to the Page
  */
 function applyDeviceAdaptations(id, device) {
-  const deviceBadge = document.getElementById('device-status-badge');
   const btnOpenApp = document.getElementById('btn-open-app');
   const btnStickyOpen = document.getElementById('btn-sticky-open-app');
   const qrWrapper = document.getElementById('qr-scanner-card');
@@ -262,16 +249,6 @@ function applyDeviceAdaptations(id, device) {
   }
 
   if (device.isIOS) {
-    if (deviceBadge) {
-      deviceBadge.innerHTML = `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:inline-block; vertical-align:middle; margin-right:6px;">
-          <rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect>
-          <line x1="12" y1="18" x2="12.01" y2="18"></line>
-        </svg>
-        iOS Device Detected • Universal Link Ready
-      `;
-      deviceBadge.className = 'device-pill device-pill-ios';
-    }
     if (qrWrapper) {
       qrWrapper.style.display = 'none'; // Hide desktop QR scanner on mobile devices
     }
@@ -279,17 +256,6 @@ function applyDeviceAdaptations(id, device) {
       androidNotice.style.display = 'none';
     }
   } else if (device.isDesktop) {
-    if (deviceBadge) {
-      deviceBadge.innerHTML = `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:inline-block; vertical-align:middle; margin-right:6px;">
-          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-          <line x1="8" y1="21" x2="16" y2="21"></line>
-          <line x1="12" y1="17" x2="12" y2="21"></line>
-        </svg>
-        Desktop Browser • Scan with iPhone
-      `;
-      deviceBadge.className = 'device-pill device-pill-desktop';
-    }
     if (qrWrapper) {
       qrWrapper.style.display = 'flex'; // Ensure QR code is prominent on desktop
     }
@@ -297,17 +263,6 @@ function applyDeviceAdaptations(id, device) {
       androidNotice.style.display = 'none';
     }
   } else if (device.isAndroid) {
-    if (deviceBadge) {
-      deviceBadge.innerHTML = `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:inline-block; vertical-align:middle; margin-right:6px;">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="8" x2="12" y2="12"></line>
-          <line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
-        Android Detected • iOS Exclusive App
-      `;
-      deviceBadge.className = 'device-pill device-pill-android';
-    }
     if (androidNotice) {
       androidNotice.style.display = 'block';
     }
