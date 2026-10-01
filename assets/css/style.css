@@ -1795,7 +1795,7 @@ p {
 }
 
 /* ==========================================================================
-   INTERACTIVE CAPCUT-STYLE VIDEO TEMPLATE PLAYER & FEATURES
+   INTERACTIVE VIDEO TEMPLATE PLAYER & SUITE
    ========================================================================== */
 
 /* Interactive Video Screen Elements */
@@ -1926,75 +1926,7 @@ p {
   box-shadow: 0 0 10px rgba(255, 0, 122, 0.5);
 }
 
-/* CapCut-Style 1-Tap Media Replacement Grid */
-.capcut-slots-section {
-  padding: 80px 0;
-  border-top: 1px solid var(--border-subtle);
-  background: rgba(14, 13, 27, 0.4);
-}
-
-.capcut-slots-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
-  margin-top: 36px;
-}
-
-.capcut-slot-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 20px 14px;
-  text-align: center;
-  backdrop-filter: blur(12px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  transition: transform var(--transition-smooth), border-color var(--transition-fast);
-}
-
-.capcut-slot-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--brand-pink);
-}
-
-.capcut-slot-num {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255, 0, 122, 0.15);
-  border: 1px solid var(--brand-pink);
-  color: #FFFFFF;
-  font-size: 0.85rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.capcut-slot-title {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  margin: 0;
-}
-
-.capcut-slot-time {
-  font-size: 0.75rem;
-  color: var(--brand-pink);
-  font-weight: 600;
-  background: rgba(255, 0, 122, 0.1);
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-}
-
-.capcut-slot-fx {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-/* CapCut Video Template Features Grid */
+/* Video Template Features Grid */
 .template-features-section {
   padding: 90px 0;
   border-top: 1px solid var(--border-subtle);
@@ -2050,7 +1982,7 @@ p {
   margin: 0;
 }
 
-/* Sticky Mobile Action Bar for CapCut Web Style */
+/* Sticky Mobile Action Bar */
 .sticky-mobile-cta {
   display: none;
   position: fixed;
@@ -2122,10 +2054,6 @@ p {
     gap: 48px;
   }
 
-  .capcut-slots-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   .template-features-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2167,10 +2095,6 @@ p {
 
   .sticky-mobile-cta {
     display: flex;
-  }
-
-  .capcut-slots-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .template-features-grid {

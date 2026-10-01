@@ -457,7 +457,7 @@ function initShareTools(id) {
 }
 
 /**
- * Interactive Simulated 9:16 Video Player (CapCut Style)
+ * Interactive Simulated 9:16 Video Template Player
  */
 function initInteractiveVideoPlayer() {
   const playerContainer = document.getElementById('template-player-container');
