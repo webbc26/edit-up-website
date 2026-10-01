@@ -1403,3 +1403,246 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   ADDITIONAL APP STORE COMPREHENSIVE FEATURE STYLES
+   ========================================================================== */
+
+/* Split Showcase Feature Rows */
+.split-feature-section {
+  padding: 80px 0;
+  position: relative;
+}
+
+.split-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.split-feature-grid.reverse {
+  direction: rtl;
+}
+
+.split-feature-grid.reverse > * {
+  direction: ltr;
+}
+
+.split-feature-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.split-feature-card {
+  width: 100%;
+  max-width: 440px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border-accent);
+  box-shadow: var(--shadow-glow);
+  background: var(--bg-card);
+}
+
+.split-feature-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.feature-check-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 20px 0 28px;
+}
+
+.feature-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.feature-check-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+/* AI Art Generator Grid */
+.ai-art-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.ai-art-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  backdrop-filter: blur(14px);
+  transition: all var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ai-art-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--brand-pink);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 0, 122, 0.2);
+}
+
+.ai-art-icon {
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+
+/* Pricing & Subscriptions Section */
+.pricing-section {
+  padding: 100px 0;
+  position: relative;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.pricing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all var(--transition-smooth);
+}
+
+.pricing-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-accent);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+.pricing-card.featured {
+  border: 2px solid var(--brand-pink);
+  background: linear-gradient(135deg, rgba(35, 25, 48, 0.8), rgba(20, 18, 36, 0.9));
+  box-shadow: var(--shadow-glow);
+  transform: scale(1.03);
+}
+
+.pricing-card.featured:hover {
+  transform: scale(1.05) translateY(-6px);
+}
+
+.pricing-popular-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gradient-brand);
+  color: #FFFFFF;
+  padding: 4px 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(255, 0, 100, 0.4);
+}
+
+.pricing-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 16px 0 6px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.pricing-period {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.pricing-trial-tag {
+  color: #FFB4D6;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.pricing-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex: 1;
+}
+
+.pricing-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+}
+
+.pricing-disclaimer {
+  max-width: 800px;
+  margin: 40px auto 0;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* New Feature Teaser Badge */
+.badge-new-feature {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgba(255, 0, 68, 0.25), rgba(184, 0, 230, 0.25));
+  border: 1px solid var(--brand-pink);
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 992px) {
+  .split-feature-grid, .split-feature-grid.reverse {
+    grid-template-columns: 1fr;
+    direction: ltr;
+    gap: 40px;
+  }
+
+  .pricing-card.featured {
+    transform: none;
+  }
+}
