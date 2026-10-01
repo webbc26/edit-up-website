@@ -72,12 +72,14 @@ Every video template page MUST contain:
 2. **Generic Social Sharing Metadata (Open Graph & Twitter):**
    ```html
    <meta property="og:type" content="video.other">
-   <meta property="og:title" content="Edit Up Video Template | AI Photo & Video Editor">
-   <meta property="og:description" content="Open this video template in Edit Up to create viral Reels and TikTok videos with beat-sync music, seamless transitions, and cinematic filters.">
+   <meta property="og:title" content="Easy Video Editor & Maker | Edit Up">
+   <meta property="og:description" content="Create viral Reels and TikTok videos effortlessly with Edit Up. Open this video template to auto-sync your photos and clips with beat-matched music, cinematic transitions, and 4K export.">
    <meta property="og:image" content="https://edit-up.com/assets/images/og-template-share.png">
    <meta property="og:image:width" content="1200">
    <meta property="og:image:height" content="630">
    <meta name="twitter:card" content="summary_large_image">
+   <meta name="twitter:title" content="Easy Video Editor & Maker | Edit Up">
+   <meta name="twitter:description" content="Create viral Reels and TikTok videos effortlessly with Edit Up. Open this video template to auto-sync your photos and clips with beat-matched music, cinematic transitions, and 4K export.">
    <meta name="twitter:image" content="https://edit-up.com/assets/images/og-template-share.png">
    ```
 3. **Deep Link Handoff:**

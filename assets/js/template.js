@@ -8,6 +8,12 @@
 const APP_STORE_URL = "https://apps.apple.com/us/app/edit-up-ai-photo-video-editor/id1333491559";
 const CUSTOM_SCHEME_PREFIX = "editup://video-template/";
 
+// Generic Metadata for All Video Templates
+const GENERIC_TITLE = "Easy Video Editor & Maker | Edit Up";
+const GENERIC_HEADING = "Easy Video Editor & Maker";
+const GENERIC_DESCRIPTION = "Create viral Reels and TikTok videos effortlessly with Edit Up. Open this video template to auto-sync your photos and clips with beat-matched music, cinematic transitions, and 4K export.";
+const GENERIC_OG_IMAGE = "https://edit-up.com/assets/images/og-template-share.png";
+
 // Video Template Presets Mapping (Fallback & Enhancements)
 const VIDEO_TEMPLATE_PRESETS = {
   "beat-sync": {
@@ -137,28 +143,26 @@ function formatTitleCase(str) {
 }
 
 /**
- * Resolves template metadata: uses preset if registered, otherwise generates dynamic generic metadata
+ * Resolves template metadata: sets generic title and description while keeping preset tags/duration if available
  */
 function resolveTemplateInfo(id) {
-  const cleanId = id.toLowerCase().trim();
-  if (VIDEO_TEMPLATE_PRESETS[cleanId]) {
-    return VIDEO_TEMPLATE_PRESETS[cleanId];
-  }
+  const cleanId = (id || '').toLowerCase().trim();
+  const preset = VIDEO_TEMPLATE_PRESETS[cleanId] || {};
 
-  const title = formatTitleCase(id);
   return {
-    title: `${title}`,
-    category: "AI Video Template",
-    duration: "0:15s",
-    clips: "8-12 Clips",
-    audio: "Auto Beat Sync Audio Track",
-    description: `Ready-to-use Edit Up video template "${id}". Open directly in Edit Up to apply automatic beat-sync cuts, video clip replacement, and cinematic color transitions in 1 tap.`,
-    tags: ["🎬 Video Template", "🎵 Beat Sync", "⚡ Auto Transitions", "📱 9:16 Vertical", "✨ 4K Export"]
+    id: id,
+    title: GENERIC_HEADING,
+    category: preset.category || "Video Template",
+    duration: preset.duration || "0:15s",
+    clips: preset.clips || "10 Clips",
+    audio: preset.audio || "Trending Beat-Sync Music",
+    description: GENERIC_DESCRIPTION,
+    tags: preset.tags || ["🎵 Beat Sync Audio", "⚡ Auto Transitions", "📱 9:16 Vertical Reels", "✨ 4K Export"]
   };
 }
 
 /**
- * Render video template UI details in the DOM
+ * Render video template UI details in the DOM (Generic title & description for all templates)
  */
 function renderVideoTemplateDetails(id, info) {
   const titleEl = document.getElementById('template-title');
@@ -168,22 +172,37 @@ function renderVideoTemplateDetails(id, info) {
   const bannerTag = document.getElementById('template-banner-tag');
   const previewTitle = document.getElementById('template-preview-title');
 
-  if (titleEl) titleEl.textContent = info.title;
+  // Title and Description remain generic for all templates
+  if (titleEl) titleEl.textContent = GENERIC_HEADING;
   if (idEl) idEl.textContent = id;
-  if (descEl) descEl.textContent = info.description;
-  if (bannerTag) bannerTag.textContent = `🎬 ${info.category.toUpperCase()}`;
-  if (previewTitle) previewTitle.textContent = info.title;
+  if (descEl) descEl.textContent = GENERIC_DESCRIPTION;
+  if (bannerTag) {
+    bannerTag.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;">
+        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+      </svg>
+      VIDEO TEMPLATES PORTAL
+    `;
+  }
+  if (previewTitle) previewTitle.textContent = GENERIC_HEADING;
 
-  if (tagsEl && info.tags) {
-    tagsEl.innerHTML = info.tags.map(t => `<span class="template-info-pill">${t}</span>`).join('');
+  if (tagsEl) {
+    const tags = (info && info.tags && info.tags.length) ? info.tags : [
+      "🎵 Beat Sync Audio",
+      "⚡ Auto Transitions",
+      "📱 9:16 Vertical Reels",
+      "✨ 4K Export"
+    ];
+    tagsEl.innerHTML = tags.map(t => `<span class="template-info-pill">${t}</span>`).join('');
   }
 }
 
 /**
- * Update Smart App Banner, Open Graph, and Page Title dynamically
+ * Update Smart App Banner, Open Graph, and Page Title dynamically with generic title and description
  */
 function updateMetadata(id, info) {
-  document.title = `${info.title} | Edit Up Video Template`;
+  document.title = GENERIC_TITLE;
 
   // Update Apple Smart App Banner with specific template ID argument
   let appBanner = document.querySelector('meta[name="apple-itunes-app"]');
@@ -200,22 +219,31 @@ function updateMetadata(id, info) {
     canonical.href = `https://edit-up.com/video-templates/${encodeURIComponent(id)}`;
   }
 
-  // Update Open Graph tags
+  // Update Open Graph tags (Generic for all templates)
   const ogTitle = document.querySelector('meta[property="og:title"]');
-  if (ogTitle) ogTitle.content = `${info.title} | Edit Up Video Template`;
+  if (ogTitle) ogTitle.content = GENERIC_TITLE;
 
   const ogDesc = document.querySelector('meta[property="og:description"]');
-  if (ogDesc) ogDesc.content = info.description;
+  if (ogDesc) ogDesc.content = GENERIC_DESCRIPTION;
 
   const ogUrl = document.querySelector('meta[property="og:url"]');
   if (ogUrl) ogUrl.content = `https://edit-up.com/video-templates/${encodeURIComponent(id)}`;
 
-  // Update Twitter Cards
+  const ogImg = document.querySelector('meta[property="og:image"]');
+  if (ogImg) ogImg.content = GENERIC_OG_IMAGE;
+
+  // Update Twitter Cards (Generic for all templates)
   const twTitle = document.querySelector('meta[name="twitter:title"]');
-  if (twTitle) twTitle.content = `${info.title} | Edit Up Video Template`;
+  if (twTitle) twTitle.content = GENERIC_TITLE;
 
   const twDesc = document.querySelector('meta[name="twitter:description"]');
-  if (twDesc) twDesc.content = info.description;
+  if (twDesc) twDesc.content = GENERIC_DESCRIPTION;
+
+  const twUrl = document.querySelector('meta[name="twitter:url"]');
+  if (twUrl) twUrl.content = `https://edit-up.com/video-templates/${encodeURIComponent(id)}`;
+
+  const twImg = document.querySelector('meta[name="twitter:image"]');
+  if (twImg) twImg.content = GENERIC_OG_IMAGE;
 }
 
 /**
@@ -235,7 +263,13 @@ function applyDeviceAdaptations(id, device) {
 
   if (device.isIOS) {
     if (deviceBadge) {
-      deviceBadge.innerHTML = '<span>📱</span> iOS Device Detected • Ready to Open';
+      deviceBadge.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:inline-block; vertical-align:middle; margin-right:6px;">
+          <rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect>
+          <line x1="12" y1="18" x2="12.01" y2="18"></line>
+        </svg>
+        iOS Device Detected • Ready to Open
+      `;
       deviceBadge.className = 'device-pill device-pill-ios';
     }
     if (btnOpenApp) {
@@ -254,7 +288,14 @@ function applyDeviceAdaptations(id, device) {
     }
   } else if (device.isDesktop) {
     if (deviceBadge) {
-      deviceBadge.innerHTML = '<span>💻</span> Desktop Browser • Scan with iPhone';
+      deviceBadge.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:inline-block; vertical-align:middle; margin-right:6px;">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        Desktop Browser • Scan with iPhone
+      `;
       deviceBadge.className = 'device-pill device-pill-desktop';
     }
     if (btnOpenApp) {
@@ -273,7 +314,14 @@ function applyDeviceAdaptations(id, device) {
     }
   } else if (device.isAndroid) {
     if (deviceBadge) {
-      deviceBadge.innerHTML = '<span>🤖</span> Android Detected • iOS Exclusive';
+      deviceBadge.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:inline-block; vertical-align:middle; margin-right:6px;">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Android Detected • iOS Exclusive App
+      `;
       deviceBadge.className = 'device-pill device-pill-android';
     }
     if (androidNotice) {
@@ -382,8 +430,8 @@ function initShareTools(id) {
     shareBtn.addEventListener('click', () => {
       if (navigator.share) {
         navigator.share({
-          title: `Edit Up Video Template: ${id}`,
-          text: `Check out this AI video template on Edit Up: AI Photo & Video Editor!`,
+          title: GENERIC_TITLE,
+          text: `Create viral Reels and TikTok videos with Edit Up! Open template: ${id}`,
           url: currentUrl
         }).catch(() => {});
       } else {

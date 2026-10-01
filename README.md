@@ -28,8 +28,8 @@ Features the signature neon sunset gradient color scheme of the app icon: Coral 
 3. **Generic Social Sharing Image & Metadata**
    - High-resolution Open Graph banner: `https://edit-up.com/assets/images/og-template-share.png` (1200 × 630 px).
    - Rich video-specific Open Graph and Twitter Cards:
-     - `og:title`: `Edit Up Video Template | AI Photo & Video Editor`
-     - `og:description`: `Open this video template in Edit Up to create viral Reels and TikTok videos with beat-sync music, seamless transitions, and cinematic filters.`
+     - `og:title` & `twitter:title`: `Easy Video Editor & Maker | Edit Up`
+     - `og:description` & `twitter:description`: `Create viral Reels and TikTok videos effortlessly with Edit Up. Open this video template to auto-sync your photos and clips with beat-matched music, cinematic transitions, and 4K export.`
      - `apple-itunes-app`: Smart App Banner enabled for iOS Safari.
 
 4. **Nginx VPS Configuration**
