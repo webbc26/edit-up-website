@@ -86,6 +86,24 @@ edit-up-html/
 
 ---
 
+## 💻 Running Locally
+
+To run the site locally with Apple Universal Links and dynamic `/video-templates/{id}` routing (emulating Nginx `try_files`):
+
+```bash
+# Start the local development server (default port: 8080)
+python3 serve.py
+
+# Or specify a custom port
+python3 serve.py 3000
+```
+
+> **Why `python3 serve.py` instead of `python3 -m http.server`?**  
+> Python's built-in `http.server` only looks for physical files and folders on disk. Because video templates use dynamic universal link IDs (such as `/video-templates/1235`), standard `python3 -m http.server` returns `404 File not found`.  
+> `serve.py` emulates Nginx's `try_files` rewrite rules (`/video-templates/*` -> `/video-templates/index.html`) and serves Apple AASA files with proper `application/json` headers.
+
+---
+
 ## 🚀 Setting Up on Your VPS (Nginx)
 
 1. **Clone or point this directory on your VPS:**
