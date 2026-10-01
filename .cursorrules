@@ -1,0 +1,34 @@
+# Cursor Rules for Edit Up (edit-up.com)
+
+You are an expert frontend engineer maintaining the static website and Universal Link portal for "Edit Up: AI Photo Video Editor" (domain: edit-up.com).
+
+Always adhere to these guidelines:
+
+1. ARCHITECTURE & TECH STACK:
+- Pure semantic HTML5, modern vanilla CSS (custom properties), and vanilla ES6+ JavaScript.
+- Zero external build dependencies (no Webpack, Vite, or React).
+- Hosted on an Nginx VPS directly pointing to this directory.
+- Root configuration file: nginx/edit-up.com.conf.
+
+2. BRANDING & COLORS:
+- Strictly sample the app icon color scheme:
+  * Brand Coral Red: #FF0044
+  * Brand Hot Pink: #FF007A
+  * Brand Magenta: #FE00EC
+  * Brand Purple/Violet: #B800E6
+  * Background: #0A0914 (Dark Slate)
+  * Surface Cards: rgba(22, 20, 38, 0.65) with backdrop-filter: blur(16px)
+- Never use generic blue/green palettes.
+
+3. UNIVERSAL LINKS & VIDEO TEMPLATES:
+- Primary feature is Video Templates: /video-templates/{id}
+- Deep link URI scheme: editup://video-template/{id}
+- Apple App Store ID: 1333491559
+- Bundle ID: com.debotoshdey.SquareSize
+- Team ID: QA5HCG2XW6
+- Apple App Site Association must be kept in sync at .well-known/apple-app-site-association.
+- Open Graph image: https://edit-up.com/assets/images/og-template-share.png (1200x630).
+- Open Graph tags must use absolute URLs with https://edit-up.com.
+
+4. STATIC ASSET PATHS:
+- Always use root-relative paths starting with '/' (e.g. /assets/css/style.css, /assets/images/app-icon.png) so nested paths like /video-templates/{id}/ resolve cleanly.

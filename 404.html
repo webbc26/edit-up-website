@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Up | AI Video & Photo Editor</title>
+
+  <!-- Apple Universal Links & Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=1333491559, app-argument=editup://video-template">
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:title" content="Edit Up Video Template | AI Video & Photo Editor">
+  <meta property="og:description" content="Open this video template in Edit Up to create stunning viral Reels and TikTok videos.">
+  <meta property="og:image" content="https://edit-up.com/assets/images/og-template-share.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://edit-up.com/assets/images/og-template-share.png">
+
+  <!-- Instant SPA Router Script for /video-templates/{id} -->
+  <script>
+    (function() {
+      var path = window.location.pathname;
+      var match = path.match(/\/(?:video-templates|templates)\/([^\/\?#]+)/i);
+      if (match && match[1] && match[1] !== 'index.html') {
+        var templateId = match[1];
+        sessionStorage.setItem('redirect_video_template_id', templateId);
+        window.location.replace('/video-templates/?id=' + encodeURIComponent(templateId));
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center;">
+
+  <div class="bg-ambient-lights">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+  </div>
+
+  <div class="container" style="max-width: 560px;">
+    <img src="/assets/images/app-icon.png" alt="Edit Up Icon" style="width: 80px; height: 80px; border-radius: 20px; box-shadow: 0 8px 30px rgba(255,0,100,0.5); margin-bottom: 24px;">
+    
+    <h1 style="font-size: 2.2rem; margin-bottom: 16px;">Loading Video Template...</h1>
+    <p style="margin-bottom: 30px;">
+      Connecting to Edit Up Universal Link. You'll be redirected to the video template viewer in just a moment.
+    </p>
+
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <a href="/" class="btn btn-secondary">Go to Homepage</a>
+      <a href="/video-templates/" class="btn btn-primary">Browse Video Templates</a>
+      <a href="https://apps.apple.com/us/app/edit-up-ai-photo-video-editor/id1333491559" class="btn btn-primary" target="_blank" rel="noopener">Download Edit Up</a>
+    </div>
+  </div>
+
+</body>
+</html>
