@@ -1462,7 +1462,11 @@ p {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 40px;
-  margin-bottom: 60px;
+  margin-bottom: 50px;
+}
+
+.footer-grid.footer-grid-3 {
+  grid-template-columns: 1.8fr 1fr 1fr;
 }
 
 .footer-brand {
@@ -1707,7 +1711,7 @@ p {
 
 .template-preview-media {
   width: 100%;
-  height: 520px;
+  height: 480px;
   position: relative;
   background: #100E1C;
   overflow: hidden;
@@ -1717,17 +1721,21 @@ p {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .template-preview-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10, 9, 20, 0.95) 0%, rgba(10, 9, 20, 0.2) 45%, rgba(10, 9, 20, 0.7) 100%);
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, rgba(10, 9, 20, 0.75) 0%, transparent 100%);
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   padding: 16px 18px;
   pointer-events: none;
+  z-index: 5;
 }
 
 .template-preview-overlay > * {
@@ -1889,41 +1897,108 @@ p {
   transition: height 0.15s ease;
 }
 
-/* Clip Replacement Strip */
+/* Video Player Control & Details Panel (Below Video Screen) */
+.template-player-details-panel {
+  padding: 18px 20px 20px;
+  background: rgba(14, 12, 26, 0.95);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.template-player-audio-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.template-audio-tag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #FF85B2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.template-player-title {
+  color: #FFFFFF;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.template-player-desc {
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Interactive Clip Timeline Strip Container */
+.template-clip-strip-container {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.template-clip-strip-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
 .template-clip-strip {
   display: flex;
-  gap: 6px;
-  margin-top: 10px;
+  gap: 8px;
   overflow-x: auto;
-  padding-bottom: 2px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  padding: 4px 2px 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 0, 122, 0.3) transparent;
 }
 
 .template-clip-strip::-webkit-scrollbar {
-  display: none;
+  height: 4px;
+}
+
+.template-clip-strip::-webkit-scrollbar-thumb {
+  background: rgba(255, 0, 122, 0.35);
+  border-radius: 4px;
 }
 
 .template-clip-slot-chip {
-  flex: 1;
-  min-width: 48px;
-  padding: 4px 6px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
-  font-size: 0.68rem;
+  flex: 0 0 auto; /* PREVENT SQUISHING! Keeps full chip width on mobile */
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--text-secondary);
   text-align: center;
   white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
   transition: all 0.2s ease;
+}
+
+.template-clip-slot-chip:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
 }
 
 .template-clip-slot-chip.active {
   background: rgba(255, 0, 122, 0.25);
   border-color: var(--brand-pink);
   color: #FFFFFF;
-  box-shadow: 0 0 10px rgba(255, 0, 122, 0.5);
+  box-shadow: 0 0 12px rgba(255, 0, 122, 0.5);
 }
 
 /* Video Template Features Grid */
@@ -2083,18 +2158,28 @@ p {
     right: 0;
   }
 
-  .footer-grid {
+  .footer-grid,
+  .footer-grid.footer-grid-3 {
     grid-template-columns: 1fr 1fr;
+    gap: 36px;
   }
 }
 
 @media (max-width: 768px) {
   body {
-    padding-bottom: 72px; /* Offset for sticky mobile bar */
+    padding-bottom: 96px; /* Offset for sticky mobile bar */
   }
 
   .sticky-mobile-cta {
     display: flex;
+  }
+
+  #qr-scanner-card {
+    display: none !important; /* Hide desktop camera QR scanner on mobile screens */
+  }
+
+  .template-preview-media {
+    height: 380px;
   }
 
   .template-features-grid {
@@ -2169,8 +2254,60 @@ p {
     flex-direction: column;
   }
 
-  .footer-grid {
-    grid-template-columns: 1fr;
+  .footer {
+    padding: 50px 0 30px;
+  }
+
+  .footer-grid,
+  .footer-grid.footer-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 32px;
+    margin-bottom: 36px;
+  }
+
+  .footer-brand {
+    text-align: left;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+    padding-top: 24px;
+    font-size: 0.84rem;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 480px) {
+  .template-preview-media {
+    height: 320px;
+  }
+
+  .template-header-badges {
+    gap: 8px;
+  }
+
+  .template-header-badge {
+    padding: 5px 12px;
+    font-size: 0.78rem;
+  }
+
+  .template-id-display {
+    padding: 5px 10px;
+    font-size: 0.84rem;
+  }
+
+  .template-player-details-panel {
+    padding: 14px 16px 16px;
+  }
+
+  .template-player-title {
+    font-size: 1.05rem;
+  }
+
+  .footer-bottom {
+    font-size: 0.8rem;
   }
 }
 

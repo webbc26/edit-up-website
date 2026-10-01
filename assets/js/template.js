@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initShareTools(templateId);
   initInteractiveVideoPlayer();
   generateQrCode(`https://edit-up.com/video-templates/${encodeURIComponent(templateId)}`);
+  initDynamicCopyright();
 });
 
 /**
@@ -621,4 +622,14 @@ function generateQrCode(url) {
     ctx.fillText('Scan with iPhone Camera', 110, 115);
   };
   img.src = qrUrl;
+}
+
+/**
+ * Dynamic Copyright Year
+ */
+function initDynamicCopyright() {
+  const currentYear = new Date().getFullYear();
+  document.querySelectorAll('.current-year').forEach(el => {
+    el.textContent = currentYear;
+  });
 }

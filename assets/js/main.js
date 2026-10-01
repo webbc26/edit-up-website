@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFAQAccordion();
   initSmoothScroll();
   initPricingSync();
+  initDynamicCopyright();
 });
 
 /* Mobile Menu Navigation */
@@ -193,5 +194,13 @@ async function initPricingSync() {
     // Graceful fallback to static pre-rendered HTML values
     console.debug('Pricing loaded from pre-rendered static HTML:', err);
   }
+}
+
+/* Dynamic Copyright Year */
+function initDynamicCopyright() {
+  const currentYear = new Date().getFullYear();
+  document.querySelectorAll('.current-year').forEach(el => {
+    el.textContent = currentYear;
+  });
 }
 
