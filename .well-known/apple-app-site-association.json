@@ -3,40 +3,16 @@
     "apps": [],
     "details": [
       {
-        "appIDs": [
-          "QA5HCG2XW6.com.debotoshdey.SquareSize"
-        ],
         "appID": "QA5HCG2XW6.com.debotoshdey.SquareSize",
         "paths": [
-          "/video-templates/*",
-          "/video-templates/*/*",
-          "/app/*",
-          "/v/*"
+          "/video-templates/*"
         ],
         "components": [
           {
-            "/": "/video-templates/*",
-            "comment": "Edit Up video template universal links"
-          },
-          {
-            "/": "/video-templates/*/*",
-            "comment": "Edit Up nested video template universal links"
-          },
-          {
-            "/": "/v/*",
-            "comment": "Edit Up short video template links"
-          },
-          {
-            "/": "/app/*",
-            "comment": "Edit Up share handoff links"
+            "/": "/video-templates/*"
           }
         ]
       }
-    ]
-  },
-  "webcredentials": {
-    "apps": [
-      "QA5HCG2XW6.com.debotoshdey.SquareSize"
     ]
   }
 }

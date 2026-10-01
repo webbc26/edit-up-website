@@ -1528,6 +1528,56 @@ p {
   align-items: center;
 }
 
+.device-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+  width: fit-content;
+}
+
+.device-pill-ios {
+  background: rgba(0, 223, 137, 0.15);
+  border: 1px solid rgba(0, 223, 137, 0.4);
+  color: #00DF89;
+}
+
+.device-pill-desktop {
+  background: rgba(0, 112, 243, 0.15);
+  border: 1px solid rgba(0, 112, 243, 0.4);
+  color: #58A6FF;
+}
+
+.device-pill-android {
+  background: rgba(255, 184, 0, 0.15);
+  border: 1px solid rgba(255, 184, 0, 0.4);
+  color: #FFB800;
+}
+
+.android-notice-box {
+  background: rgba(255, 184, 0, 0.1);
+  border: 1px solid rgba(255, 184, 0, 0.35);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  color: #FFE6A3;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.template-header-badges {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
 .template-header-badge {
   display: inline-flex;
   align-items: center;
@@ -1680,6 +1730,66 @@ p {
   flex-direction: column;
   justify-content: flex-end;
   padding: 24px;
+}
+
+/* Template Handoff 3-Step Guide */
+.template-steps-section {
+  padding: 80px 0 100px;
+  border-top: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+.template-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 40px;
+}
+
+.template-step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  text-align: center;
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  transition: transform var(--transition-smooth), border-color var(--transition-fast);
+}
+
+.template-step-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 0, 122, 0.4);
+}
+
+.template-step-num {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  color: #FFFFFF;
+  font-size: 1.3rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(255, 0, 100, 0.4);
+}
+
+.template-step-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.template-step-card p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
 }
 
 /* Responsive Media Queries */

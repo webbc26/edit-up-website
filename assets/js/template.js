@@ -1,13 +1,14 @@
 /**
- * Edit Up - Video Template Viewer & Universal Link Handler
+ * Edit Up - Generic Video Template Viewer & Universal Link Gateway
  * Domain: edit-up.com
- * Handles video-templates routing, dynamic parameter extraction, deep linking, QR code generation, and sharing
+ * Handles dynamic template ID resolution, device detection, deep link handoff,
+ * Smart App Banner injection, and QR code generation.
  */
 
 const APP_STORE_URL = "https://apps.apple.com/us/app/edit-up-ai-photo-video-editor/id1333491559";
 const CUSTOM_SCHEME_PREFIX = "editup://video-template/";
 
-// Video Template Presets Mapping
+// Video Template Presets Mapping (Fallback & Enhancements)
 const VIDEO_TEMPLATE_PRESETS = {
   "beat-sync": {
     title: "Dynamic Beat Sync Reel",
@@ -66,42 +67,53 @@ const VIDEO_TEMPLATE_PRESETS = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  const device = detectDevice();
   const templateId = getVideoTemplateIdFromUrl();
-  renderVideoTemplateDetails(templateId);
-  initDeepLinkButton(templateId);
+  const templateInfo = resolveTemplateInfo(templateId);
+
+  renderVideoTemplateDetails(templateId, templateInfo);
+  updateMetadata(templateId, templateInfo);
+  applyDeviceAdaptations(templateId, device);
+  initDeepLinkButton(templateId, device);
   initShareTools(templateId);
-  generateQrCode(window.location.href);
+  generateQrCode(`https://edit-up.com/video-templates/${encodeURIComponent(templateId)}`);
 });
+
+/**
+ * Detect Visitor Device Platform
+ */
+function detectDevice() {
+  const ua = (navigator.userAgent || navigator.vendor || window.opera || '').toLowerCase();
+  const isIOS = /ipad|iphone|ipod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /android/i.test(ua);
+  const isDesktop = !isIOS && !isAndroid;
+
+  return { isIOS, isAndroid, isDesktop };
+}
 
 /**
  * Extract video template ID from /video-templates/{id}, query ?id=, or hash #id
  */
 function getVideoTemplateIdFromUrl() {
   const path = window.location.pathname;
-  
+
   // Check if session storage has a redirect from 404.html
   const storedId = sessionStorage.getItem('redirect_video_template_id');
   if (storedId) {
     sessionStorage.removeItem('redirect_video_template_id');
-    return storedId;
+    return storedId.trim();
   }
 
   // Check URL path: /video-templates/<id>
   const match = path.match(/\/video-templates\/([^\/\?#]+)/i);
-  if (match && match[1] && match[1] !== 'index.html') {
-    return decodeURIComponent(match[1]);
-  }
-
-  // Also check legacy /templates/<id> if any
-  const legacyMatch = path.match(/\/templates\/([^\/\?#]+)/i);
-  if (legacyMatch && legacyMatch[1] && legacyMatch[1] !== 'index.html') {
-    return decodeURIComponent(legacyMatch[1]);
+  if (match && match[1] && match[1].toLowerCase() !== 'index.html') {
+    return decodeURIComponent(match[1]).trim();
   }
 
   // Check query parameter: ?id=<id>
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has('id')) {
-    return urlParams.get('id');
+  if (urlParams.has('id') && urlParams.get('id').trim()) {
+    return urlParams.get('id').trim();
   }
 
   // Check hash: #<id>
@@ -110,63 +122,195 @@ function getVideoTemplateIdFromUrl() {
     if (hash) return hash;
   }
 
-  return "beat-sync"; // Default video template
+  return "beat-sync"; // Default template
 }
 
 /**
- * Format string to Title Case
+ * Format string to Clean Title Case
  */
 function formatTitleCase(str) {
+  if (!str) return "Video Template";
+  if (/^\d+$/.test(str)) return `Video Template #${str}`;
   return str
     .replace(/[-_]+/g, ' ')
     .replace(/\b\w/g, c => c.toUpperCase());
 }
 
 /**
- * Render video template UI details
+ * Resolves template metadata: uses preset if registered, otherwise generates dynamic generic metadata
  */
-function renderVideoTemplateDetails(id) {
+function resolveTemplateInfo(id) {
   const cleanId = id.toLowerCase().trim();
-  const info = VIDEO_TEMPLATE_PRESETS[cleanId] || {
-    title: `${formatTitleCase(cleanId)} Video Template`,
+  if (VIDEO_TEMPLATE_PRESETS[cleanId]) {
+    return VIDEO_TEMPLATE_PRESETS[cleanId];
+  }
+
+  const title = formatTitleCase(id);
+  return {
+    title: `${title}`,
     category: "AI Video Template",
     duration: "0:15s",
     clips: "8-12 Clips",
     audio: "Auto Beat Sync Audio Track",
-    description: `Custom Edit Up video template ID "${cleanId}". Open in the app to apply automatic beat-sync cuts, audio replacement, and cinematic color transitions in 1 tap.`,
-    tags: ["🎬 Video Template", "🎵 Beat Sync", "⚡ Auto Transitions", "📱 9:16 Vertical"]
+    description: `Ready-to-use Edit Up video template "${id}". Open directly in Edit Up to apply automatic beat-sync cuts, video clip replacement, and cinematic color transitions in 1 tap.`,
+    tags: ["🎬 Video Template", "🎵 Beat Sync", "⚡ Auto Transitions", "📱 9:16 Vertical", "✨ 4K Export"]
   };
+}
 
-  // Update DOM elements
+/**
+ * Render video template UI details in the DOM
+ */
+function renderVideoTemplateDetails(id, info) {
   const titleEl = document.getElementById('template-title');
   const idEl = document.getElementById('template-id-text');
   const descEl = document.getElementById('template-description');
   const tagsEl = document.getElementById('template-tags-container');
   const bannerTag = document.getElementById('template-banner-tag');
+  const previewTitle = document.getElementById('template-preview-title');
 
   if (titleEl) titleEl.textContent = info.title;
   if (idEl) idEl.textContent = id;
   if (descEl) descEl.textContent = info.description;
   if (bannerTag) bannerTag.textContent = `🎬 ${info.category.toUpperCase()}`;
+  if (previewTitle) previewTitle.textContent = info.title;
 
-  if (tagsEl) {
+  if (tagsEl && info.tags) {
     tagsEl.innerHTML = info.tags.map(t => `<span class="template-info-pill">${t}</span>`).join('');
   }
-
-  // Update Page Title
-  document.title = `${info.title} | Edit Up Video Template`;
 }
 
 /**
- * Handle "Open in Edit Up App" button with custom scheme & App Store fallback
+ * Update Smart App Banner, Open Graph, and Page Title dynamically
  */
-function initDeepLinkButton(id) {
+function updateMetadata(id, info) {
+  document.title = `${info.title} | Edit Up Video Template`;
+
+  // Update Apple Smart App Banner with specific template ID argument
+  let appBanner = document.querySelector('meta[name="apple-itunes-app"]');
+  if (!appBanner) {
+    appBanner = document.createElement('meta');
+    appBanner.name = 'apple-itunes-app';
+    document.head.appendChild(appBanner);
+  }
+  appBanner.content = `app-id=1333491559, app-argument=editup://video-template/${encodeURIComponent(id)}`;
+
+  // Update canonical URL
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) {
+    canonical.href = `https://edit-up.com/video-templates/${encodeURIComponent(id)}`;
+  }
+
+  // Update Open Graph tags
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.content = `${info.title} | Edit Up Video Template`;
+
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.content = info.description;
+
+  const ogUrl = document.querySelector('meta[property="og:url"]');
+  if (ogUrl) ogUrl.content = `https://edit-up.com/video-templates/${encodeURIComponent(id)}`;
+
+  // Update Twitter Cards
+  const twTitle = document.querySelector('meta[name="twitter:title"]');
+  if (twTitle) twTitle.content = `${info.title} | Edit Up Video Template`;
+
+  const twDesc = document.querySelector('meta[name="twitter:description"]');
+  if (twDesc) twDesc.content = info.description;
+}
+
+/**
+ * Apply Device-Aware Customizations to the Page
+ */
+function applyDeviceAdaptations(id, device) {
+  const deviceBadge = document.getElementById('device-status-badge');
+  const btnOpenApp = document.getElementById('btn-open-app');
+  const fallbackBox = document.querySelector('.template-fallback-box');
+  const qrWrapper = document.getElementById('qr-scanner-card');
+  const androidNotice = document.getElementById('android-device-notice');
+
+  // Update deep link URL on the button
+  if (btnOpenApp) {
+    btnOpenApp.setAttribute('href', `${CUSTOM_SCHEME_PREFIX}${encodeURIComponent(id)}`);
+  }
+
+  if (device.isIOS) {
+    if (deviceBadge) {
+      deviceBadge.innerHTML = '<span>📱</span> iOS Device Detected • Ready to Open';
+      deviceBadge.className = 'device-pill device-pill-ios';
+    }
+    if (btnOpenApp) {
+      btnOpenApp.innerHTML = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        Open Template in Edit Up
+      `;
+    }
+    if (qrWrapper) {
+      qrWrapper.style.display = 'none'; // Hide desktop QR scanner on iOS devices
+    }
+    if (androidNotice) {
+      androidNotice.style.display = 'none';
+    }
+  } else if (device.isDesktop) {
+    if (deviceBadge) {
+      deviceBadge.innerHTML = '<span>💻</span> Desktop Browser • Scan with iPhone';
+      deviceBadge.className = 'device-pill device-pill-desktop';
+    }
+    if (btnOpenApp) {
+      btnOpenApp.innerHTML = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        Launch in Edit Up (editup://)
+      `;
+    }
+    if (qrWrapper) {
+      qrWrapper.style.display = 'flex'; // Ensure QR code is prominent on desktop
+    }
+    if (androidNotice) {
+      androidNotice.style.display = 'none';
+    }
+  } else if (device.isAndroid) {
+    if (deviceBadge) {
+      deviceBadge.innerHTML = '<span>🤖</span> Android Detected • iOS Exclusive';
+      deviceBadge.className = 'device-pill device-pill-android';
+    }
+    if (androidNotice) {
+      androidNotice.style.display = 'block';
+    }
+    if (btnOpenApp) {
+      btnOpenApp.innerHTML = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        View Edit Up on App Store
+      `;
+      btnOpenApp.setAttribute('href', APP_STORE_URL);
+      btnOpenApp.setAttribute('target', '_blank');
+      btnOpenApp.setAttribute('rel', 'noopener');
+    }
+    if (qrWrapper) {
+      qrWrapper.style.display = 'none';
+    }
+  }
+}
+
+/**
+ * Handle "Open in Edit Up App" button click with Custom URI Scheme and App Store fallback
+ */
+function initDeepLinkButton(id, device) {
   const btn = document.getElementById('btn-open-app');
   if (!btn) return;
 
   const deepLink = `${CUSTOM_SCHEME_PREFIX}${encodeURIComponent(id)}`;
 
   btn.addEventListener('click', (e) => {
+    // If Android, direct to App Store or alert
+    if (device.isAndroid) {
+      return; // Let native link navigate to App Store
+    }
+
     e.preventDefault();
 
     const startTime = Date.now();
@@ -175,21 +319,37 @@ function initDeepLinkButton(id) {
     const onBlur = () => {
       appOpened = true;
       window.removeEventListener('blur', onBlur);
+      window.removeEventListener('pagehide', onBlur);
     };
-    window.addEventListener('blur', onBlur);
 
-    // Attempt custom URI scheme
+    window.addEventListener('blur', onBlur);
+    window.addEventListener('pagehide', onBlur);
+
+    // Attempt to open native app via custom scheme
     window.location.href = deepLink;
 
-    // Fallback prompt if app not installed
+    // Fallback to App Store if native app did not open after 1.6s
     setTimeout(() => {
       window.removeEventListener('blur', onBlur);
-      if (!appOpened && (Date.now() - startTime < 3000)) {
-        const userConfirm = confirm(
-          "Edit Up does not appear to be installed on this device.\n\nWould you like to download Edit Up for free on the App Store to use this video template?"
-        );
-        if (userConfirm) {
+      window.removeEventListener('pagehide', onBlur);
+
+      // If document is still visible and less than 3 seconds elapsed, app wasn't opened
+      if (!appOpened && document.visibilityState === 'visible' && (Date.now() - startTime < 3200)) {
+        if (device.isIOS) {
+          // Direct fallback to Apple App Store on iOS
           window.location.href = APP_STORE_URL;
+        } else {
+          // On desktop, scroll to QR code or offer App Store link
+          const qrBox = document.getElementById('qr-scanner-card');
+          if (qrBox) {
+            qrBox.scrollIntoView({ behavior: 'smooth' });
+            qrBox.style.boxShadow = '0 0 30px rgba(255, 0, 122, 0.7)';
+            setTimeout(() => {
+              qrBox.style.boxShadow = '';
+            }, 2000);
+          } else {
+            window.open(APP_STORE_URL, '_blank');
+          }
         }
       }
     }, 1600);
@@ -197,7 +357,7 @@ function initDeepLinkButton(id) {
 }
 
 /**
- * Share & Copy Link utility
+ * Share & Copy Link utilities
  */
 function initShareTools(id) {
   const copyBtn = document.getElementById('btn-copy-template-link');
@@ -211,7 +371,7 @@ function initShareTools(id) {
         copyBtn.innerHTML = '<span>✓ Copied Universal Link!</span>';
         setTimeout(() => {
           copyBtn.innerHTML = origText;
-        }, 2000);
+        }, 2200);
       }).catch(() => {
         prompt('Copy this video template link:', currentUrl);
       });
@@ -228,7 +388,7 @@ function initShareTools(id) {
         }).catch(() => {});
       } else {
         navigator.clipboard.writeText(currentUrl).then(() => {
-          alert('Video template link copied to clipboard!');
+          alert('Video template universal link copied to clipboard!');
         });
       }
     });
@@ -236,7 +396,7 @@ function initShareTools(id) {
 }
 
 /**
- * Generates lightweight visual QR code on canvas so desktop users can scan with iPhone
+ * Generates lightweight visual QR code on canvas so desktop users can scan with iPhone camera
  */
 function generateQrCode(url) {
   const canvas = document.getElementById('template-qr-canvas');
@@ -245,7 +405,7 @@ function generateQrCode(url) {
   const img = new Image();
   img.crossOrigin = "Anonymous";
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&color=ffffff&bgcolor=151326&data=${encodeURIComponent(url)}`;
-  
+
   img.onload = () => {
     const ctx = canvas.getContext('2d');
     canvas.width = 220;

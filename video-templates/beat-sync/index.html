@@ -68,7 +68,6 @@
         <ul class="nav-links">
           <li><a href="/" class="nav-link">Home</a></li>
           <li><a href="/#features" class="nav-link">Features</a></li>
-          <li><a href="/video-templates/" class="nav-link active">Video Templates</a></li>
           <li><a href="/#pricing" class="nav-link">Pricing</a></li>
           <li><a href="/#faq" class="nav-link">FAQ</a></li>
         </ul>
@@ -98,9 +97,14 @@
         <!-- Left: Video Template Information & Universal Link Actions -->
         <div class="template-view-info">
           
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+          <!-- Device Detection Status Pill -->
+          <div id="device-status-badge" class="device-pill device-pill-ios">
+            <span>📱</span> Checking device compatibility...
+          </div>
+
+          <div class="template-header-badges">
             <span class="template-header-badge" id="template-banner-tag">🎬 VIDEO TEMPLATE</span>
-            <span class="template-id-display">ID: <span id="template-id-text">loading...</span></span>
+            <span class="template-id-display">ID: <strong id="template-id-text">loading...</strong></span>
           </div>
 
           <h1 id="template-title" class="gradient-text-light" style="margin-bottom: 16px;">
@@ -112,21 +116,26 @@
           </p>
 
           <!-- Video Template Specs / Pills -->
-          <div class="template-info-pills" id="template-tags-container" style="margin-bottom: 32px;">
+          <div class="template-info-pills" id="template-tags-container" style="margin-bottom: 28px;">
             <span class="template-info-pill">🎵 Beat Sync Audio</span>
             <span class="template-info-pill">⚡ Auto Transitions</span>
             <span class="template-info-pill">📱 9:16 Reels & TikTok</span>
             <span class="template-info-pill">✨ 4K Export</span>
           </div>
 
-          <!-- Deep Link Action CTA -->
+          <!-- Android Notice Box (Shown only if Android detected) -->
+          <div id="android-device-notice" class="android-notice-box" style="display: none;">
+            📱 <strong>iOS Exclusive App:</strong> Edit Up is currently available exclusively for iPhone and iPad. Scan the QR code or share this universal link to open on an Apple device.
+          </div>
+
+          <!-- Deep Link Action CTA Area -->
           <div class="template-actions">
             
             <a href="editup://video-template" id="btn-open-app" class="btn-open-app">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
               </svg>
-              Open Video Template in Edit Up
+              Open Template in Edit Up
             </a>
 
             <!-- App Store Fallback Box -->
@@ -146,7 +155,7 @@
               </a>
             </div>
 
-            <!-- Share & QR Actions -->
+            <!-- Share & Copy Universal Link Tools -->
             <div class="template-share-tools">
               <button id="btn-copy-template-link" class="btn-tool">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -164,7 +173,7 @@
                   <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
                   <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                 </svg>
-                Share Video Template
+                Share Template
               </button>
             </div>
 
@@ -180,7 +189,7 @@
               <img src="/assets/images/screenshots/screen-4.jpg" alt="Video Template Preview" id="template-preview-img">
               
               <!-- Simulated Video Play Button -->
-              <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 72px; height: 72px; border-radius: 50%; background: rgba(0, 0, 0, 0.65); border: 2px solid var(--brand-pink); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(255, 0, 122, 0.4);">
+              <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 72px; height: 72px; border-radius: 50%; background: rgba(0, 0, 0, 0.65); border: 2px solid var(--brand-pink); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(255, 0, 122, 0.4); pointer-events: none;">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF" style="margin-left: 4px;">
                   <polygon points="5 3 19 12 5 21 5 3"></polygon>
                 </svg>
@@ -194,20 +203,20 @@
                     9:16 Video Reel
                   </span>
                   <span class="badge" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.2);">
-                    ⏱ 0:15s • 10 Clips
+                    ⏱ Auto-Beat Sync
                   </span>
                 </div>
-                <h4 style="color: #FFFFFF; font-size: 1.15rem;">Edit Up Video Project</h4>
-                <p style="color: var(--text-secondary); font-size: 0.85rem;">Music gallery, auto-cut transitions, and color grading synced.</p>
+                <h4 id="template-preview-title" style="color: #FFFFFF; font-size: 1.15rem; margin-bottom: 4px;">Edit Up Video Project</h4>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">Music gallery, auto-cut transitions, and color grading synced.</p>
               </div>
             </div>
 
             <!-- Desktop QR Scanner for Mobile Universal Link Handoff -->
-            <div style="padding: 20px; background: rgba(0,0,0,0.45); display: flex; align-items: center; gap: 16px; border-top: 1px solid var(--border-subtle);">
-              <canvas id="template-qr-canvas" style="width: 76px; height: 76px; border-radius: 10px; border: 1px solid var(--border-accent); flex-shrink: 0;"></canvas>
+            <div id="qr-scanner-card" style="padding: 22px; background: rgba(0,0,0,0.55); display: flex; align-items: center; gap: 18px; border-top: 1px solid var(--border-subtle);">
+              <canvas id="template-qr-canvas" style="width: 80px; height: 80px; border-radius: 12px; border: 1px solid var(--border-accent); flex-shrink: 0;"></canvas>
               <div>
-                <strong style="color: #FFFFFF; font-size: 0.9rem; display: block;">Scan with iPhone Camera</strong>
-                <span style="font-size: 0.8rem; color: var(--text-secondary);">Directly triggers Apple Universal Link to load this video template in Edit Up.</span>
+                <strong style="color: #FFFFFF; font-size: 0.95rem; display: block; margin-bottom: 4px;">Scan with iPhone Camera</strong>
+                <span style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; display: block;">Instantly triggers Apple Universal Link to load this video template in Edit Up.</span>
               </div>
             </div>
 
@@ -218,118 +227,34 @@
     </div>
   </main>
 
-  <!-- Trending Video Templates Section -->
-  <section class="templates-hub-section" style="border-top: 1px solid var(--border-subtle);">
+  <!-- 3-Step Universal Link Handoff Guide -->
+  <section class="template-steps-section">
     <div class="container">
       
       <div class="section-header">
-        <span class="section-tag">Explore Styles</span>
-        <h2>Trending AI Video Templates</h2>
-        <p>Pre-timed cuts, synced trending audio, and cinematic color transitions ready for your next Instagram Reel or TikTok.</p>
+        <span class="section-tag">Quick Start</span>
+        <h2>How to Use This Video Template</h2>
+        <p>Three effortless steps to transform your raw photos and videos into a viral, beat-synced masterpiece.</p>
       </div>
 
-      <div class="templates-grid">
-
-        <!-- Template 1: Beat Sync -->
-        <div class="template-card">
-          <div class="template-card-preview">
-            <img src="/assets/images/screenshots/screen-4.jpg" alt="Beat Sync Video Template" loading="lazy">
-            <span class="template-badge">BEAT SYNC</span>
-          </div>
-          <div class="template-card-body">
-            <span class="template-id-tag">/video-templates/beat-sync</span>
-            <h3>Dynamic Beat Sync Reel</h3>
-            <p>Fast-paced cuts matched perfectly to rhythmic audio drops with flash transitions.</p>
-            <div class="template-card-footer">
-              <span style="font-size: 0.82rem; color: var(--text-muted);">9:16 • 0:12s</span>
-              <a href="/video-templates/beat-sync" class="btn btn-secondary" style="padding: 8px 18px; font-size: 0.85rem;">Use Template</a>
-            </div>
-          </div>
+      <div class="template-steps-grid">
+        
+        <div class="template-step-card">
+          <div class="template-step-num">1</div>
+          <h3>Tap or Scan to Open</h3>
+          <p>Tap "Open in Edit Up" on your iPhone or scan the QR code. iOS Universal Links will immediately load this template in the app.</p>
         </div>
 
-        <!-- Template 2: Vintage Vlog -->
-        <div class="template-card">
-          <div class="template-card-preview">
-            <img src="/assets/images/screenshots/screen-7.jpg" alt="Vintage Vlog Video Template" loading="lazy">
-            <span class="template-badge">RETRO 35MM</span>
-          </div>
-          <div class="template-card-body">
-            <span class="template-id-tag">/video-templates/vintage-vlog</span>
-            <h3>Vintage 35mm Film Vlog</h3>
-            <p>Retro warm color grading, organic grain, light leaks, and smooth camera pan effect.</p>
-            <div class="template-card-footer">
-              <span style="font-size: 0.82rem; color: var(--text-muted);">9:16 • 0:24s</span>
-              <a href="/video-templates/vintage-vlog" class="btn btn-secondary" style="padding: 8px 18px; font-size: 0.85rem;">Use Template</a>
-            </div>
-          </div>
+        <div class="template-step-card">
+          <div class="template-step-num">2</div>
+          <h3>Select Your Clips</h3>
+          <p>Choose your favorite photos and video clips from your camera roll. The template automatically cuts them to the music beat drops.</p>
         </div>
 
-        <!-- Template 3: Cinematic Travel -->
-        <div class="template-card">
-          <div class="template-card-preview">
-            <img src="/assets/images/screenshots/screen-2.jpg" alt="Cinematic Travel Video Template" loading="lazy">
-            <span class="template-badge">CINEMATIC</span>
-          </div>
-          <div class="template-card-body">
-            <span class="template-id-tag">/video-templates/cinematic-travel</span>
-            <h3>Cinematic Travel Montage</h3>
-            <p>Slow-motion zoom transitions with ambient music soundscape for outdoor clips.</p>
-            <div class="template-card-footer">
-              <span style="font-size: 0.82rem; color: var(--text-muted);">9:16 • 0:18s</span>
-              <a href="/video-templates/cinematic-travel" class="btn btn-secondary" style="padding: 8px 18px; font-size: 0.85rem;">Use Template</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Template 4: Reel Glow -->
-        <div class="template-card">
-          <div class="template-card-preview">
-            <img src="/assets/images/screenshots/screen-1.png" alt="Neon Reel Glow" loading="lazy">
-            <span class="template-badge">NEON GLOW</span>
-          </div>
-          <div class="template-card-body">
-            <span class="template-id-tag">/video-templates/reel-glow</span>
-            <h3>Cyberpunk Neon Video Glow</h3>
-            <p>Electric pink & violet outline tracing with dynamic subject tracking blur.</p>
-            <div class="template-card-footer">
-              <span style="font-size: 0.82rem; color: var(--text-muted);">9:16 • 0:15s</span>
-              <a href="/video-templates/reel-glow" class="btn btn-secondary" style="padding: 8px 18px; font-size: 0.85rem;">Use Template</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Template 5: Fast Montage -->
-        <div class="template-card">
-          <div class="template-card-preview">
-            <img src="/assets/images/screenshots/screen-6.jpg" alt="Fast Montage" loading="lazy">
-            <span class="template-badge">PHOTO COLLAGE REEL</span>
-          </div>
-          <div class="template-card-body">
-            <span class="template-id-tag">/video-templates/fast-montage</span>
-            <h3>Multi-Clip Photo & Video Reel</h3>
-            <p>Synchronized collage split-screen transitions with snappy zoom bursts.</p>
-            <div class="template-card-footer">
-              <span style="font-size: 0.82rem; color: var(--text-muted);">9:16 • 0:10s</span>
-              <a href="/video-templates/fast-montage" class="btn btn-secondary" style="padding: 8px 18px; font-size: 0.85rem;">Use Template</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Template 6: Aesthetic Story -->
-        <div class="template-card">
-          <div class="template-card-preview">
-            <img src="/assets/images/screenshots/screen-3.jpg" alt="Aesthetic Story" loading="lazy">
-            <span class="template-badge">EDITORIAL</span>
-          </div>
-          <div class="template-card-body">
-            <span class="template-id-tag">/video-templates/aesthetic-story</span>
-            <h3>Minimalist Lifestyle Story</h3>
-            <p>Soft pastel framing, gentle dissolve transitions, and clean typography badges.</p>
-            <div class="template-card-footer">
-              <span style="font-size: 0.82rem; color: var(--text-muted);">9:16 • 0:20s</span>
-              <a href="/video-templates/aesthetic-story" class="btn btn-secondary" style="padding: 8px 18px; font-size: 0.85rem;">Use Template</a>
-            </div>
-          </div>
+        <div class="template-step-card">
+          <div class="template-step-num">3</div>
+          <h3>Export in 4K & Post</h3>
+          <p>Apply optional cinematic filters, text effects, or speed ramps, then export in crystal-clear 4K directly to Instagram or TikTok.</p>
         </div>
 
       </div>
@@ -361,13 +286,13 @@
         </div>
 
         <div>
-          <h4 class="footer-heading">Video Features</h4>
+          <h4 class="footer-heading">Features</h4>
           <ul class="footer-links">
-            <li><a href="/#features" class="footer-link">Beat Sync Music</a></li>
-            <li><a href="/#features" class="footer-link">Video Replace Gallery</a></li>
+            <li><a href="/#video-editor" class="footer-link">Video Editor & Music</a></li>
+            <li><a href="/#enhancer" class="footer-link">1-Tap HD Enhancer</a></li>
             <li><a href="/#features" class="footer-link">Magic Expand</a></li>
-            <li><a href="/#features" class="footer-link">1-Tap Cutout</a></li>
-            <li><a href="/#features" class="footer-link">4K Video Export</a></li>
+            <li><a href="/#features" class="footer-link">Background Cutout</a></li>
+            <li><a href="/#features" class="footer-link">No-Crop Instagram Fit</a></li>
           </ul>
         </div>
 
@@ -378,7 +303,6 @@
             <li><a href="/video-templates/beat-sync" class="footer-link">Beat Sync Template</a></li>
             <li><a href="/video-templates/vintage-vlog" class="footer-link">Vintage Vlog Template</a></li>
             <li><a href="/video-templates/cinematic-travel" class="footer-link">Cinematic Travel</a></li>
-            <li><a href="/video-templates/reel-glow" class="footer-link">Reel Glow</a></li>
           </ul>
         </div>
 
