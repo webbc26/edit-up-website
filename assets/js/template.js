@@ -54,9 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const templateId = getVideoTemplateIdFromUrl();
   const templateInfo = resolveTemplateInfo(templateId);
 
-  // Diagnostic Console Logs for Developers & QA testing
-  logDiagnostics(templateId, device);
-
   // Render Generic UI & Metadata
   renderVideoTemplateDetails(templateId, templateInfo);
   updateMetadata(templateId, templateInfo);
@@ -67,30 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
   generateQrCode(`https://edit-up.com/video-templates/${encodeURIComponent(templateId)}`);
   initDynamicCopyright();
 });
-
-/**
- * Detailed Console Logging for Device Detection & Universal Link Handoff
- */
-function logDiagnostics(templateId, device) {
-  const currentUrl = `https://edit-up.com/video-templates/${encodeURIComponent(templateId)}`;
-  const deepLink = `${CUSTOM_SCHEME_PREFIX}${encodeURIComponent(templateId)}`;
-
-  console.group('%c[Edit Up Universal Link Portal]', 'color: #FE00EC; font-size: 13px; font-weight: bold; padding: 2px 4px;');
-  console.log('%cTemplate ID:%c ' + templateId, 'font-weight: bold; color: #FFFFFF;', 'color: #00DF89; font-weight: bold;');
-  console.log('%cDetected Device:%c ' + (device.isIOS ? '📱 iOS (iPhone / iPad)' : device.isAndroid ? '🤖 Android' : '💻 Desktop Browser'), 'font-weight: bold; color: #FFFFFF;', 'color: #FFB800; font-weight: bold;');
-  console.log('%cUniversal Link URL:%c ' + currentUrl, 'font-weight: bold; color: #FFFFFF;', 'color: #38bdf8;');
-  console.log('%cCustom Scheme URI:%c ' + deepLink, 'font-weight: bold; color: #FFFFFF;', 'color: #f472b6;');
-  console.log('%cApple App Store Target:%c ' + APP_STORE_URL, 'font-weight: bold; color: #FFFFFF;', 'color: #a78bfa;');
-  console.groupEnd();
-
-  if (device.isIOS) {
-    console.log('%c[Edit Up Universal Link] 📱 iOS Device Detected! Ready to trigger native app or redirect to App Store.', 'color: #00DF89; font-weight: bold;');
-  } else if (device.isAndroid) {
-    console.log('%c[Edit Up Universal Link] 🤖 Android Detected. Directing to App Store link.', 'color: #FFB800;');
-  } else {
-    console.log('%c[Edit Up Universal Link] 💻 Desktop Browser Detected. Showing QR code for iPhone camera scanning.', 'color: #38bdf8;');
-  }
-}
 
 /**
  * Detect Visitor Device Platform
@@ -299,21 +272,18 @@ function initDeepLinkHandoff(id, device) {
   // Attach click listener for primary and sticky buttons
   const handleClick = (e) => {
     if (device.isAndroid) {
-      console.log('[Edit Up Handoff] Android user tapped. Directing to App Store URL:', APP_STORE_URL);
       return; // Let native link navigate to App Store
     }
 
     e.preventDefault();
-    console.log('[Edit Up Handoff] 👆 User tapped "Use Template in Edit Up"');
     dispatchHandoff(deepLink, false, device);
   };
 
   if (btn) btn.addEventListener('click', handleClick);
   if (btnSticky) btnSticky.addEventListener('click', handleClick);
 
-  // If on iOS, initiate automatic handoff with console logging
+  // If on iOS, initiate automatic handoff
   if (device.isIOS) {
-    console.log('[Edit Up Handoff] 📱 iOS device detected. Scheduling automatic Universal Link handoff in 1.5s...');
     setTimeout(() => {
       dispatchHandoff(deepLink, true, device);
     }, 1500);
@@ -321,18 +291,14 @@ function initDeepLinkHandoff(id, device) {
 }
 
 /**
- * Core Handoff Execution with Fallback Timer & Console Logging
+ * Core Handoff Execution with Fallback Timer
  */
 function dispatchHandoff(deepLink, isAuto, device) {
-  console.log(`%c[Edit Up Universal Link] ${isAuto ? '⚡ Auto-dispatching' : '🚀 Dispatching'} custom URI scheme: ` + deepLink, 'color: #FE00EC; font-weight: bold;');
-  console.log('%c[Edit Up Universal Link] ⏱️ 1800ms fallback timer started. If native app does not respond, redirecting to Apple App Store...', 'color: #FFB800;');
-
   const startTime = Date.now();
   let appOpened = false;
 
   const onBlur = () => {
     appOpened = true;
-    console.log('%c[Edit Up Universal Link] ✓ Native Edit Up app launched successfully!', 'color: #00DF89; font-weight: bold;');
     window.removeEventListener('blur', onBlur);
     window.removeEventListener('pagehide', onBlur);
   };
@@ -344,7 +310,7 @@ function dispatchHandoff(deepLink, isAuto, device) {
   try {
     window.location.href = deepLink;
   } catch (err) {
-    console.error('[Edit Up Universal Link] Error dispatching custom scheme:', err);
+    // Graceful fallback
   }
 
   // Fallback to App Store if native app did not take over
@@ -355,11 +321,8 @@ function dispatchHandoff(deepLink, isAuto, device) {
     // If page is still visible and less than 3500ms elapsed, app wasn't opened
     if (!appOpened && document.visibilityState === 'visible' && (Date.now() - startTime < 3500)) {
       if (device.isIOS) {
-        console.warn('[Edit Up Universal Link] ⚠️ Native Edit Up app did not open within timeout (app not installed or testing in browser).');
-        console.log('%c[Edit Up Universal Link] 🚀 Redirecting to Apple App Store: ' + APP_STORE_URL, 'color: #FF007A; font-weight: bold;');
         window.location.href = APP_STORE_URL;
       } else {
-        console.log('[Edit Up Universal Link] Desktop browser: highlighting iPhone QR code for camera scan.');
         const qrBox = document.getElementById('qr-scanner-card');
         if (qrBox) {
           qrBox.scrollIntoView({ behavior: 'smooth' });

@@ -192,7 +192,6 @@ async function initPricingSync() {
     });
   } catch (err) {
     // Graceful fallback to static pre-rendered HTML values
-    console.debug('Pricing loaded from pre-rendered static HTML:', err);
   }
 }
 
